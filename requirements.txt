@@ -1,0 +1,36 @@
+# NTWS Automation Toolkit Dependencies
+
+# Core automation
+pywinauto>=0.6.9
+pyautogui>=0.9.54
+
+# OCR
+easyocr>=1.7.0
+# Note: torch/torchvision installed automatically with easyocr
+# For GPU support: pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+
+# Image processing
+Pillow>=10.0.0
+opencv-python>=4.8.0
+numpy>=1.24.0
+
+# Windows API
+pywin32>=306
+
+# Configuration
+PyYAML>=6.0
+
+# Clipboard (for unicode input)
+pyperclip>=1.8.0
+
+# MCP Server
+mcp>=1.0.0
+
+# Optional: keyboard state detection
+# keyboard>=0.13.5
+
+# Development
+pytest>=7.0.0
+pytest-cov>=4.0.0
+black>=23.0.0
+mypy>=1.0.0

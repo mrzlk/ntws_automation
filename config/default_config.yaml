@@ -1,0 +1,53 @@
+# NTWS Automation Toolkit Default Configuration
+
+# Path to NTWS installation
+ntws_path: "C:\\ntws"
+
+# Screen/display settings
+screen:
+  base_resolution: [1920, 1080]
+  scale_factor: 1.0
+  dpi_aware: true
+
+# Timing and delays (seconds)
+timing:
+  action_delay: 0.1
+  typing_interval: 0.02
+  element_timeout: 10
+  window_timeout: 30
+  ocr_timeout: 5
+  retry_delay: 1.0
+  max_retries: 3
+
+# OCR settings
+ocr:
+  engine: "easyocr"  # easyocr or tesseract
+  languages: ["en"]
+  use_gpu: true
+  confidence_threshold: 0.5
+
+# Safety settings - IMPORTANT for trading
+safety:
+  paper_trading_only: true      # Require paper trading mode
+  max_order_quantity: 1000      # Max shares per order
+  max_order_value: 100000.0     # Max order value in USD
+  confirm_orders: true          # Confirm before transmitting
+  fail_safe_enabled: true       # PyAutoGUI failsafe (corner abort)
+  emergency_stop_corners: true  # Move to corner to stop
+  log_all_actions: true         # Log every action
+
+# Logging settings
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  max_bytes: 10000000
+  backup_count: 5
+  console_output: true
+
+# Custom screen regions (calibrate for your setup)
+# Format: name: {x: int, y: int, width: int, height: int}
+custom_regions: {}
+
+# Custom hotkey bindings (override defaults)
+# Format: action_name: {modifiers: [keys], key: string}
+custom_hotkeys: {}

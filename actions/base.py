@@ -1,5 +1,5 @@
 """
-Base classes for high-level NTWS actions.
+Base classes for high-level TWS actions.
 
 Provides:
 - Abstract Action base class
@@ -15,7 +15,7 @@ import logging
 import time
 
 if TYPE_CHECKING:
-    from .. import NTWSToolkit
+    from .. import TWSToolkit
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +52,7 @@ class ActionResult:
 
 class Action(ABC):
     """
-    Base class for all NTWS actions.
+    Base class for all TWS actions.
 
     Actions are high-level operations that combine
     low-level automation primitives (keyboard, mouse, OCR)
@@ -63,15 +63,15 @@ class Action(ABC):
     - validate(**kwargs): Validate parameters
 
     Attributes:
-        toolkit: Reference to NTWSToolkit for accessing components.
+        toolkit: Reference to TWSToolkit for accessing components.
     """
 
-    def __init__(self, toolkit: 'NTWSToolkit'):
+    def __init__(self, toolkit: 'TWSToolkit'):
         """
         Initialize action.
 
         Args:
-            toolkit: Parent NTWSToolkit instance.
+            toolkit: Parent TWSToolkit instance.
         """
         self.toolkit = toolkit
         self._logger = logging.getLogger(
@@ -82,7 +82,7 @@ class Action(ABC):
 
     @property
     def window(self):
-        """Get NTWS window manager."""
+        """Get TWS window manager."""
         return self.toolkit.window
 
     @property
@@ -97,7 +97,7 @@ class Action(ABC):
 
     @property
     def hotkeys(self):
-        """Get NTWS hotkey manager."""
+        """Get TWS hotkey manager."""
         return self.toolkit.hotkeys
 
     @property
@@ -149,7 +149,7 @@ class Action(ABC):
 
     def _wait_for_ready(self, timeout: int = None) -> bool:
         """
-        Wait for NTWS to be ready.
+        Wait for TWS to be ready.
 
         Args:
             timeout: Maximum wait time.
@@ -200,7 +200,7 @@ class CompositeAction(Action):
 
     def __init__(
         self,
-        toolkit: 'NTWSToolkit',
+        toolkit: 'TWSToolkit',
         actions: List[Action] = None,
         stop_on_failure: bool = True
     ):

@@ -1,7 +1,7 @@
 """
-Window management for NTWS automation.
+Window management for TWS (Trader Workstation) automation.
 
-Uses pywinauto with UIA backend for Qt6 application support.
+Uses pywinauto with UIA backend for Java Swing application support.
 Provides window connection, discovery, and lifecycle management.
 """
 
@@ -48,25 +48,26 @@ class WindowManager(ABC):
         pass
 
 
-class NTWSWindow(WindowManager):
+class TWSWindow(WindowManager):
     """
-    NTWS window connection and management.
+    TWS (Trader Workstation) window connection and management.
 
     Uses pywinauto with UIA (UI Automation) backend for
-    Qt6/QML application support.
+    Java Swing application support.
 
     Attributes:
-        WINDOW_TITLE_PATTERN: Regex pattern to match NTWS window titles.
+        WINDOW_TITLE_PATTERN: Regex pattern to match TWS window titles.
         PROCESS_NAME: Expected process name.
         timeout: Connection timeout in seconds.
     """
 
-    WINDOW_TITLE_PATTERN = r".*IBKR.*|.*Trader Workstation.*|.*TWS.*|.*Paper Trading.*"
-    PROCESS_NAME = "ntws.exe"
+    # TWS window title format: "{AccountID} Interactive Brokers (Simulated Trading)"
+    WINDOW_TITLE_PATTERN = r".*Interactive Brokers.*|.*Trader Workstation.*|.*Simulated Trading.*"
+    PROCESS_NAME = "tws.exe"
 
     def __init__(self, timeout: int = 30):
         """
-        Initialize NTWS window manager.
+        Initialize TWS window manager.
 
         Args:
             timeout: Maximum time to wait for window operations.
@@ -83,7 +84,7 @@ class NTWSWindow(WindowManager):
 
     @property
     def main_window(self) -> Optional['UIAWrapper']:
-        """Get main NTWS window wrapper."""
+        """Get main TWS window wrapper."""
         return self._main_window
 
     @property
@@ -93,16 +94,16 @@ class NTWSWindow(WindowManager):
 
     def connect(self) -> bool:
         """
-        Connect to running NTWS instance.
+        Connect to running TWS instance.
 
-        Attempts to find and connect to NTWS window using
+        Attempts to find and connect to TWS window using
         title pattern matching.
 
         Returns:
             True if connection successful, False otherwise.
 
         Note:
-            Requires NTWS to be running and visible.
+            Requires TWS to be running and visible.
         """
         try:
             from pywinauto import Application, Desktop
@@ -118,20 +119,20 @@ class NTWSWindow(WindowManager):
                         self._app = Application(backend='uia').connect(handle=win.handle)
                         self._main_window = win
                         self._hwnd = win.handle
-                        logger.info(f"Connected to NTWS window: {title}")
+                        logger.info(f"Connected to TWS window: {title}")
                         return True
                 except Exception as e:
                     logger.debug(f"Skipping window: {e}")
                     continue
 
-            logger.warning("NTWS window not found")
+            logger.warning("TWS window not found")
             return False
 
         except ImportError:
             logger.error("pywinauto not installed. Run: pip install pywinauto")
             return False
         except Exception as e:
-            logger.error(f"Failed to connect to NTWS: {e}")
+            logger.error(f"Failed to connect to TWS: {e}")
             return False
 
     def find_window(self, title_pattern: str) -> Optional['UIAWrapper']:
@@ -164,7 +165,7 @@ class NTWSWindow(WindowManager):
 
     def get_all_windows(self) -> List['UIAWrapper']:
         """
-        Get all NTWS-related windows including dialogs.
+        Get all TWS-related windows including dialogs.
 
         Returns:
             List of window wrappers.
@@ -219,7 +220,7 @@ class NTWSWindow(WindowManager):
 
     def is_ready(self) -> bool:
         """
-        Check if NTWS is ready for interaction.
+        Check if TWS is ready for interaction.
 
         Verifies:
         - Window exists
@@ -242,9 +243,9 @@ class NTWSWindow(WindowManager):
 
     def bring_to_front(self) -> None:
         """
-        Bring NTWS main window to foreground.
+        Bring TWS main window to foreground.
 
-        Makes NTWS the active window and ensures
+        Makes TWS the active window and ensures
         it's visible for automation.
         """
         if self._main_window:
@@ -270,7 +271,7 @@ class NTWSWindow(WindowManager):
             return None
 
     def minimize(self) -> None:
-        """Minimize NTWS window."""
+        """Minimize TWS window."""
         if self._main_window:
             try:
                 self._main_window.minimize()
@@ -278,7 +279,7 @@ class NTWSWindow(WindowManager):
                 logger.warning(f"Could not minimize window: {e}")
 
     def restore(self) -> None:
-        """Restore NTWS window from minimized state."""
+        """Restore TWS window from minimized state."""
         if self._main_window:
             try:
                 self._main_window.restore()

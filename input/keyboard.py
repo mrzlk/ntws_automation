@@ -2,7 +2,7 @@
 Keyboard automation combining pyautogui and pywinauto.
 
 Provides reliable text input and hotkey support for
-NTWS automation.
+TWS automation.
 """
 
 from typing import List, Optional, Union

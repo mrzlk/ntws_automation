@@ -3,24 +3,24 @@ Core module - window connection and element finding.
 """
 
 from .exceptions import (
-    NTWSAutomationError,
+    TWSAutomationError,
     WindowNotFoundError,
     ElementNotFoundError,
     TimeoutError,
     ActionFailedError,
     OCRError,
 )
-from .window import NTWSWindow
+from .window import TWSWindow
 from .element import ElementFinder, Element, ElementSpec, FindStrategy
 
 __all__ = [
-    "NTWSAutomationError",
+    "TWSAutomationError",
     "WindowNotFoundError",
     "ElementNotFoundError",
     "TimeoutError",
     "ActionFailedError",
     "OCRError",
-    "NTWSWindow",
+    "TWSWindow",
     "ElementFinder",
     "Element",
     "ElementSpec",

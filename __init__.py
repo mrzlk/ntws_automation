@@ -1,14 +1,14 @@
 """
-NTWS Automation Toolkit
+TWS Automation Toolkit
 
-GUI automation for IBKR Trader Workstation without official API.
+GUI automation for IBKR Trader Workstation (TWS) without official API.
 Provides Python API and MCP server for Claude integration.
 """
 
-from .core.window import NTWSWindow
+from .core.window import TWSWindow
 from .core.element import ElementFinder, Element, ElementSpec
 from .core.exceptions import (
-    NTWSAutomationError,
+    TWSAutomationError,
     WindowNotFoundError,
     ElementNotFoundError,
     TimeoutError,
@@ -16,16 +16,16 @@ from .core.exceptions import (
 )
 from .config.settings import ConfigManager, ToolkitConfig
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 __all__ = [
-    "NTWSToolkit",
-    "NTWSWindow",
+    "TWSToolkit",
+    "TWSWindow",
     "ElementFinder",
     "Element",
     "ElementSpec",
     "ConfigManager",
     "ToolkitConfig",
-    "NTWSAutomationError",
+    "TWSAutomationError",
     "WindowNotFoundError",
     "ElementNotFoundError",
     "TimeoutError",
@@ -33,9 +33,9 @@ __all__ = [
 ]
 
 
-class NTWSToolkit:
+class TWSToolkit:
     """
-    Main entry point for NTWS automation.
+    Main entry point for TWS automation.
 
     Provides unified access to all automation capabilities:
     - Window connection and management
@@ -44,7 +44,7 @@ class NTWSToolkit:
     - High-level trading actions
 
     Usage:
-        toolkit = NTWSToolkit()
+        toolkit = TWSToolkit()
         toolkit.connect()
 
         # Search for symbol
@@ -61,10 +61,10 @@ class NTWSToolkit:
 
     Attributes:
         config: Toolkit configuration
-        window: NTWS window manager
+        window: TWS window manager
         keyboard: Keyboard automation
         mouse: Mouse automation
-        hotkeys: NTWS hotkey integration
+        hotkeys: TWS hotkey integration
         capture: Screen capture
         ocr: OCR engine
         finder: Element finder
@@ -73,18 +73,18 @@ class NTWSToolkit:
 
     def __init__(self, config_path: str = None):
         """
-        Initialize NTWS Automation Toolkit.
+        Initialize TWS Automation Toolkit.
 
         Args:
             config_path: Optional path to config file.
                         Uses default location if not specified.
         """
         from .config.settings import ConfigManager
-        from .core.window import NTWSWindow
+        from .core.window import TWSWindow
         from .core.element import ElementFinder
         from .input.keyboard import Keyboard
         from .input.mouse import Mouse
-        from .input.hotkeys import NTWSHotkeys
+        from .input.hotkeys import TWSHotkeys
         from .screen.capture import ScreenCapture
         from .screen.ocr import OCREngine
         from .screen.regions import RegionManager
@@ -97,17 +97,17 @@ class NTWSToolkit:
 
         # Setup logging
         setup_logging(self.config.logging)
-        self._logger = get_logger('NTWSToolkit')
+        self._logger = get_logger('TWSToolkit')
 
         # Initialize components
-        self.window = NTWSWindow(timeout=self.config.timing.window_timeout)
+        self.window = TWSWindow(timeout=self.config.timing.window_timeout)
         self.keyboard = Keyboard(
             typing_interval=self.config.timing.typing_interval
         )
         self.mouse = Mouse(
             fail_safe=self.config.safety.fail_safe_enabled
         )
-        self.hotkeys = NTWSHotkeys(
+        self.hotkeys = TWSHotkeys(
             self.keyboard,
             self.config.custom_hotkeys
         )
@@ -122,25 +122,25 @@ class NTWSToolkit:
         # Initialize action registry
         self.actions = ActionRegistry(self)
 
-        self._logger.info("NTWS Automation Toolkit initialized")
+        self._logger.info("TWS Automation Toolkit initialized")
 
     def connect(self) -> bool:
         """
-        Connect to running NTWS instance.
+        Connect to running TWS instance.
 
         Returns:
             True if connected successfully, False otherwise.
 
         Raises:
-            WindowNotFoundError: If NTWS window not found.
+            WindowNotFoundError: If TWS window not found.
         """
-        self._logger.info("Connecting to NTWS...")
+        self._logger.info("Connecting to TWS...")
 
         if not self.window.connect():
-            self._logger.error("Failed to connect to NTWS")
+            self._logger.error("Failed to connect to TWS")
             return False
 
-        self._logger.info("Connected to NTWS successfully")
+        self._logger.info("Connected to TWS successfully")
 
         # Safety check for paper trading
         if self.config.safety.paper_trading_only:
@@ -155,7 +155,7 @@ class NTWSToolkit:
 
     def _verify_paper_trading(self) -> bool:
         """
-        Verify NTWS is in paper trading mode.
+        Verify TWS is in paper trading mode.
 
         Checks jts.ini for tradingMode=p setting.
 
@@ -164,7 +164,7 @@ class NTWSToolkit:
         """
         import os
 
-        jts_ini_path = os.path.join(self.config.ntws_path, 'jts.ini')
+        jts_ini_path = os.path.join(self.config.tws_path, 'jts.ini')
 
         try:
             with open(jts_ini_path, 'r') as f:
@@ -175,10 +175,10 @@ class NTWSToolkit:
             return False
 
     def disconnect(self) -> None:
-        """Cleanup and disconnect from NTWS."""
-        self._logger.info("Disconnecting from NTWS")
+        """Cleanup and disconnect from TWS."""
+        self._logger.info("Disconnecting from TWS")
         # Cleanup resources if needed
 
     def is_connected(self) -> bool:
-        """Check if connected to NTWS."""
+        """Check if connected to TWS."""
         return self.window.is_ready()

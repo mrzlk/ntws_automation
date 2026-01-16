@@ -1,5 +1,5 @@
 """
-Screenshot capture optimized for NTWS windows.
+Screenshot capture optimized for TWS windows.
 
 Provides efficient screen capture with support for:
 - Full screen capture
@@ -13,7 +13,7 @@ from PIL import Image
 import logging
 
 if TYPE_CHECKING:
-    from ..core.window import NTWSWindow
+    from ..core.window import TWSWindow
     from ..core.element import Element
     import numpy as np
 
@@ -28,15 +28,15 @@ class ScreenCapture:
     trading application automation.
 
     Attributes:
-        window: NTWS window manager instance.
+        window: TWS window manager instance.
     """
 
-    def __init__(self, window: 'NTWSWindow' = None):
+    def __init__(self, window: 'TWSWindow' = None):
         """
         Initialize screen capture.
 
         Args:
-            window: Optional NTWS window manager for
+            window: Optional TWS window manager for
                    window-specific captures.
         """
         self.window = window
@@ -77,7 +77,7 @@ class ScreenCapture:
         even for partially obscured windows.
 
         Args:
-            hwnd: Window handle (uses NTWS window if None).
+            hwnd: Window handle (uses TWS window if None).
 
         Returns:
             PIL Image of window, or None on failure.
@@ -161,12 +161,12 @@ class ScreenCapture:
             return self.capture_region(bounds)
         return None
 
-    def capture_ntws(self) -> Optional[Image.Image]:
+    def capture_tws(self) -> Optional[Image.Image]:
         """
-        Capture NTWS main window.
+        Capture TWS main window.
 
         Returns:
-            PIL Image of NTWS window.
+            PIL Image of TWS window.
         """
         return self.capture_window()
 

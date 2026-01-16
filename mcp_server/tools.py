@@ -1,7 +1,7 @@
 """
-MCP Tools definitions for NTWS Automation.
+MCP Tools definitions for TWS Automation.
 
-Defines the tools that Claude can use to control NTWS.
+Defines the tools that Claude can use to control TWS.
 """
 
 import json
@@ -11,7 +11,7 @@ from typing import List, Dict, Any, TYPE_CHECKING
 from io import BytesIO
 
 if TYPE_CHECKING:
-    from .. import NTWSToolkit
+    from .. import TWSToolkit
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ def get_tools() -> List[Dict[str, Any]]:
         # Order tools (priority)
         Tool(
             name="create_order",
-            description="Create a new order in NTWS. WARNING: In live mode this places real orders.",
+            description="Create a new order in TWS. WARNING: In live mode this places real orders.",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -173,7 +173,7 @@ def get_tools() -> List[Dict[str, Any]]:
         # Screen tools
         Tool(
             name="screenshot",
-            description="Take a screenshot of NTWS terminal",
+            description="Take a screenshot of TWS terminal",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -206,7 +206,7 @@ def get_tools() -> List[Dict[str, Any]]:
         # Status tools
         Tool(
             name="get_status",
-            description="Get NTWS connection status and trading mode",
+            description="Get TWS connection status and trading mode",
             inputSchema={
                 "type": "object",
                 "properties": {}
@@ -218,7 +218,7 @@ def get_tools() -> List[Dict[str, Any]]:
 
 
 async def handle_tool_call(
-    toolkit: 'NTWSToolkit',
+    toolkit: 'TWSToolkit',
     name: str,
     arguments: dict
 ) -> str:
@@ -226,7 +226,7 @@ async def handle_tool_call(
     Handle MCP tool call.
 
     Args:
-        toolkit: NTWSToolkit instance.
+        toolkit: TWSToolkit instance.
         name: Tool name.
         arguments: Tool arguments.
 
@@ -248,7 +248,7 @@ async def handle_tool_call(
 
 
 def _execute_tool(
-    toolkit: 'NTWSToolkit',
+    toolkit: 'TWSToolkit',
     name: str,
     args: dict
 ) -> dict:
@@ -326,7 +326,7 @@ def _execute_tool(
 
     # Screen tools
     elif name == "screenshot":
-        image = toolkit.capture.capture_ntws()
+        image = toolkit.capture.capture_tws()
         if image:
             # Convert to base64
             buffer = BytesIO()
@@ -341,7 +341,7 @@ def _execute_tool(
         return {"success": False, "error": "Could not capture screenshot"}
 
     elif name == "read_screen":
-        image = toolkit.capture.capture_ntws()
+        image = toolkit.capture.capture_tws()
         if image:
             if args.get("pattern"):
                 result = toolkit.ocr.find_text(image, args["pattern"])
@@ -373,7 +373,7 @@ def _execute_tool(
             "success": True,
             "connected": is_connected,
             "paper_trading": is_paper,
-            "ntws_path": toolkit.config.ntws_path
+            "tws_path": toolkit.config.tws_path
         }
 
     else:

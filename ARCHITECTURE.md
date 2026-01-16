@@ -1,15 +1,15 @@
-# NTWS Automation Toolkit - Architecture Overview
+# TWS Automation Toolkit - Architecture Overview
 
 ## Purpose
 
-GUI automation for IBKR Trader Workstation (Qt/QML app) without official API.
+GUI automation for IBKR Trader Workstation (Java Swing app) without official API.
 Simulates human input (keyboard, mouse) + reads screen via OCR.
 
 ## Project Structure
 
 ```
-ntws_automation/
-├── __init__.py          # NTWSToolkit - main entry point
+tws_automation/
+├── __init__.py          # TWSToolkit - main entry point
 ├── core/                # Window connection, element finding
 ├── input/               # Keyboard, mouse, hotkeys
 ├── screen/              # Screenshots, OCR
@@ -24,21 +24,21 @@ ntws_automation/
 ### 1. Main Toolkit Class
 
 ```python
-class NTWSToolkit:
+class TWSToolkit:
     """Main entry point - combines all components."""
 
     def __init__(self, config_path: str = None):
-        self.window: NTWSWindow      # Window manager
+        self.window: TWSWindow       # Window manager
         self.keyboard: Keyboard      # Keyboard input
         self.mouse: Mouse            # Mouse input
-        self.hotkeys: NTWSHotkeys    # NTWS shortcuts
+        self.hotkeys: TWSHotkeys     # TWS shortcuts
         self.capture: ScreenCapture  # Screenshots
         self.ocr: OCREngine          # Text recognition
         self.finder: ElementFinder   # UI element finding
         self.actions: ActionRegistry # High-level actions
 
     def connect(self) -> bool:
-        """Connect to running NTWS window."""
+        """Connect to running TWS window."""
 
     def _verify_paper_trading(self) -> bool:
         """Safety check - verify paper trading mode."""
@@ -58,7 +58,7 @@ class ActionResult:
 class Action(ABC):
     """Base class for all high-level actions."""
 
-    def __init__(self, toolkit: NTWSToolkit):
+    def __init__(self, toolkit: TWSToolkit):
         self.toolkit = toolkit
 
     # Convenience accessors
@@ -85,7 +85,7 @@ class Action(ABC):
 class ActionRegistry:
     """Unified access to all actions."""
 
-    def __init__(self, toolkit: NTWSToolkit):
+    def __init__(self, toolkit: TWSToolkit):
         self._create_order = CreateOrderAction(toolkit)
         self._search_symbol = SearchSymbolAction(toolkit)
         # ... other actions
@@ -107,8 +107,8 @@ class ActionRegistry:
 ### 4. Exception Hierarchy
 
 ```python
-NTWSAutomationError          # Base
-├── WindowNotFoundError      # NTWS not running
+TWSAutomationError           # Base
+├── WindowNotFoundError      # TWS not running
 ├── ElementNotFoundError     # UI element not found
 ├── TimeoutError             # Operation timed out
 ├── ActionFailedError        # High-level action failed
@@ -196,13 +196,13 @@ Tool(
 
 ```python
 # input/hotkeys.py
-class NTWSAction(Enum):
+class TWSAction(Enum):
     MY_ACTION = "my_action"
 
-class NTWSHotkeys:
+class TWSHotkeys:
     DEFAULT_HOTKEYS = {
-        NTWSAction.MY_ACTION: HotkeyBinding(
-            NTWSAction.MY_ACTION, ['ctrl', 'shift'], 'm', 'My action'
+        TWSAction.MY_ACTION: HotkeyBinding(
+            TWSAction.MY_ACTION, ['ctrl', 'shift'], 'm', 'My action'
         ),
     }
 ```
@@ -235,7 +235,7 @@ class RegionManager:
 ```
 User Command
      ↓
-NTWSToolkit.actions.create_order(...)
+TWSToolkit.actions.create_order(...)
      ↓
 CreateOrderAction.execute()
      ↓
@@ -273,9 +273,9 @@ mcp          - Claude MCP protocol
 ## Usage Example
 
 ```python
-from ntws_automation import NTWSToolkit
+from tws_automation import TWSToolkit
 
-toolkit = NTWSToolkit()
+toolkit = TWSToolkit()
 toolkit.connect()
 
 # Via Python

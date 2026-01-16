@@ -1,8 +1,8 @@
 """
-Screen region definitions for NTWS UI elements.
+Screen region definitions for TWS UI elements.
 
 Supports multiple resolutions with automatic scaling.
-Regions are defined relative to NTWS window position.
+Regions are defined relative to TWS window position.
 """
 
 from dataclasses import dataclass, field
@@ -11,7 +11,7 @@ import json
 import logging
 
 if TYPE_CHECKING:
-    from ..core.window import NTWSWindow
+    from ..core.window import TWSWindow
 
 logger = logging.getLogger(__name__)
 
@@ -126,7 +126,7 @@ class RegionManager:
     """
     Manages screen regions with resolution awareness.
 
-    Regions are relative to NTWS main window.
+    Regions are relative to TWS main window.
     Supports automatic scaling for different resolutions.
 
     Attributes:
@@ -186,14 +186,14 @@ class RegionManager:
 
     def __init__(
         self,
-        window: 'NTWSWindow' = None,
+        window: 'TWSWindow' = None,
         config_path: str = None
     ):
         """
         Initialize region manager.
 
         Args:
-            window: NTWS window manager for position offset.
+            window: TWS window manager for position offset.
             config_path: Path to custom region config file.
         """
         self.window = window

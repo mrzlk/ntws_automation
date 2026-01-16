@@ -51,7 +51,7 @@ class GetPortfolioAction(Action):
 
     def execute(self) -> ActionResult:
         """
-        Read portfolio positions from NTWS.
+        Read portfolio positions from TWS.
 
         Uses combination of:
         1. Navigate to portfolio window
@@ -66,11 +66,11 @@ class GetPortfolioAction(Action):
 
         try:
             # 1. Open portfolio window
-            self.hotkeys.execute(NTWSAction.PORTFOLIO) if hasattr(self.hotkeys, 'execute') else None
+            self.hotkeys.execute(TWSAction.PORTFOLIO) if hasattr(self.hotkeys, 'execute') else None
             self._delay(0.5)
 
             # 2. Capture portfolio area
-            screenshot = self.capture.capture_ntws()
+            screenshot = self.capture.capture_tws()
             if not screenshot:
                 return ActionResult.fail(
                     error="Could not capture screen",
@@ -92,7 +92,7 @@ class GetPortfolioAction(Action):
 
                 for row in table_data:
                     try:
-                        # Parse row data (format depends on NTWS layout)
+                        # Parse row data (format depends on TWS layout)
                         if 'symbol' in row or 'Symbol' in row:
                             symbol = row.get('symbol') or row.get('Symbol', '')
                             if symbol:
@@ -249,5 +249,5 @@ class ClosePositionAction(Action):
             )
 
 
-# Import NTWSAction for hotkey access
-from ..input.hotkeys import NTWSAction
+# Import TWSAction for hotkey access
+from ..input.hotkeys import TWSAction

@@ -1,9 +1,9 @@
 """
-Element finding and interaction for Qt6/QML controls.
+Element finding and interaction for Java Swing controls.
 
 Provides multiple strategies for finding UI elements:
 - UI Automation tree (for accessible elements)
-- OCR text search (for custom QML elements)
+- OCR text search (for custom elements)
 - Image template matching (fallback)
 - Fixed position (last resort)
 
@@ -17,7 +17,7 @@ from abc import ABC, abstractmethod
 import logging
 
 if TYPE_CHECKING:
-    from .window import NTWSWindow
+    from .window import TWSWindow
     from pywinauto.controls.uiawrapper import UIAWrapper
 
 logger = logging.getLogger(__name__)
@@ -271,12 +271,12 @@ class ElementFinder:
     - Configurable timeouts
     """
 
-    def __init__(self, window: 'NTWSWindow'):
+    def __init__(self, window: 'TWSWindow'):
         """
         Initialize element finder.
 
         Args:
-            window: NTWS window manager instance.
+            window: TWS window manager instance.
         """
         self.window = window
         self._cache: dict = {}

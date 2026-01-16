@@ -1,5 +1,5 @@
 """
-Logging configuration for NTWS automation toolkit.
+Logging configuration for TWS automation toolkit.
 """
 
 import logging
@@ -25,8 +25,8 @@ def setup_logging(config: 'LoggingConfig') -> None:
     if _initialized:
         return
 
-    # Get root logger for ntws_automation
-    root_logger = logging.getLogger('ntws_automation')
+    # Get root logger for tws_automation
+    root_logger = logging.getLogger('tws_automation')
     root_logger.setLevel(getattr(logging, config.level.upper(), logging.INFO))
 
     # Clear existing handlers
@@ -62,12 +62,12 @@ def get_logger(name: str) -> logging.Logger:
     Get or create logger for module.
 
     Args:
-        name: Logger name (will be prefixed with ntws_automation).
+        name: Logger name (will be prefixed with tws_automation).
 
     Returns:
         Logger instance.
     """
-    full_name = f'ntws_automation.{name}'
+    full_name = f'tws_automation.{name}'
 
     if full_name not in _loggers:
         _loggers[full_name] = logging.getLogger(full_name)

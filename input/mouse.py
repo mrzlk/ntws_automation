@@ -1,7 +1,7 @@
 """
 Mouse automation with precise control and safety features.
 
-Provides mouse control for NTWS automation with:
+Provides mouse control for TWS automation with:
 - Smooth movement
 - Click variations
 - Scroll support

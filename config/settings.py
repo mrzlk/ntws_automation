@@ -1,5 +1,5 @@
 """
-Configuration management for NTWS automation toolkit.
+Configuration management for TWS automation toolkit.
 
 Provides dataclass-based configuration with:
 - File persistence (YAML)
@@ -83,7 +83,7 @@ class ToolkitConfig:
 
     Contains all sub-configurations for the automation toolkit.
     """
-    ntws_path: str = r'C:\ntws'
+    tws_path: str = r'C:\Jts'
     screen: ScreenConfig = field(default_factory=ScreenConfig)
     timing: TimingConfig = field(default_factory=TimingConfig)
     ocr: OCRConfig = field(default_factory=OCRConfig)
@@ -104,7 +104,7 @@ class ConfigManager:
         DEFAULT_CONFIG_PATH: Default location for config file.
     """
 
-    DEFAULT_CONFIG_PATH = Path.home() / '.ntws_automation' / 'config.yaml'
+    DEFAULT_CONFIG_PATH = Path.home() / '.tws_automation' / 'config.yaml'
 
     def __init__(self, config_path: str = None):
         """
@@ -140,8 +140,8 @@ class ConfigManager:
 
     def _apply_config(self, data: dict) -> None:
         """Apply loaded config data to config object."""
-        if 'ntws_path' in data:
-            self.config.ntws_path = data['ntws_path']
+        if 'tws_path' in data:
+            self.config.tws_path = data['tws_path']
 
         if 'screen' in data:
             self._update_dataclass(self.config.screen, data['screen'])
@@ -194,7 +194,7 @@ class ConfigManager:
     def _config_to_dict(self) -> dict:
         """Convert config to dictionary."""
         return {
-            'ntws_path': self.config.ntws_path,
+            'tws_path': self.config.tws_path,
             'screen': asdict(self.config.screen),
             'timing': asdict(self.config.timing),
             'ocr': asdict(self.config.ocr),
@@ -262,9 +262,9 @@ class ConfigManager:
         """
         errors = []
 
-        # Check NTWS path
-        if not Path(self.config.ntws_path).exists():
-            errors.append(f"NTWS path not found: {self.config.ntws_path}")
+        # Check TWS path
+        if not Path(self.config.tws_path).exists():
+            errors.append(f"TWS path not found: {self.config.tws_path}")
 
         # Check timing values
         if self.config.timing.action_delay < 0:

@@ -2,7 +2,7 @@
 Entry point for running MCP server as module.
 
 Usage:
-    python -m ntws_automation.mcp_server
+    python -m tws_automation.mcp_server
 """
 
 import logging

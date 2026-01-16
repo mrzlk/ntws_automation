@@ -1,5 +1,5 @@
 """
-NTWS navigation actions.
+TWS navigation actions.
 """
 
 from typing import Optional, List
@@ -83,7 +83,7 @@ class SearchSymbolAction(Action):
 
 
 class OpenWindowAction(Action):
-    """Open specific NTWS window/panel."""
+    """Open specific TWS window/panel."""
 
     # Window name to menu path mapping
     WINDOWS = {

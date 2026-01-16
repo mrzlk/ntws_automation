@@ -1,5 +1,5 @@
 """
-Order entry actions for NTWS.
+Order entry actions for TWS.
 
 IMPORTANT: These actions can place real orders in live trading mode.
 Use with caution and always verify paper trading mode is active.
@@ -11,7 +11,7 @@ from decimal import Decimal
 import time
 
 from .base import Action, ActionResult
-from ..input.hotkeys import NTWSAction
+from ..input.hotkeys import TWSAction
 
 import logging
 

@@ -43,15 +43,15 @@ class ActionRegistry:
     Registry for available high-level actions.
 
     Provides convenient access to all actions through
-    the NTWSToolkit.actions interface.
+    the TWSToolkit.actions interface.
     """
 
-    def __init__(self, toolkit: 'NTWSToolkit'):
+    def __init__(self, toolkit: 'TWSToolkit'):
         """
         Initialize action registry.
 
         Args:
-            toolkit: Parent NTWSToolkit instance.
+            toolkit: Parent TWSToolkit instance.
         """
         self.toolkit = toolkit
 
@@ -83,7 +83,7 @@ class ActionRegistry:
 
     def open_window(self, window_name: str) -> ActionResult:
         """
-        Open NTWS window by name.
+        Open TWS window by name.
 
         Args:
             window_name: Window name ('portfolio', 'orders', etc.).

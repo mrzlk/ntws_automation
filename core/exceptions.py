@@ -1,8 +1,8 @@
 """
-Custom exceptions for NTWS automation.
+Custom exceptions for TWS automation.
 
 Exception hierarchy:
-    NTWSAutomationError (base)
+    TWSAutomationError (base)
     ├── WindowNotFoundError
     ├── ElementNotFoundError
     ├── TimeoutError
@@ -11,9 +11,9 @@ Exception hierarchy:
 """
 
 
-class NTWSAutomationError(Exception):
+class TWSAutomationError(Exception):
     """
-    Base exception for all NTWS automation errors.
+    Base exception for all TWS automation errors.
 
     All custom exceptions inherit from this class,
     allowing catch-all error handling.
@@ -25,21 +25,21 @@ class NTWSAutomationError(Exception):
         self.details = details or {}
 
 
-class WindowNotFoundError(NTWSAutomationError):
+class WindowNotFoundError(TWSAutomationError):
     """
-    NTWS window not found.
+    TWS window not found.
 
     Raised when:
-    - NTWS is not running
+    - TWS is not running
     - Window title doesn't match expected pattern
     - Window is minimized/hidden and cannot be accessed
     """
 
-    def __init__(self, message: str = "NTWS window not found", **kwargs):
+    def __init__(self, message: str = "TWS window not found", **kwargs):
         super().__init__(message, **kwargs)
 
 
-class ElementNotFoundError(NTWSAutomationError):
+class ElementNotFoundError(TWSAutomationError):
     """
     UI element not found.
 
@@ -55,7 +55,7 @@ class ElementNotFoundError(NTWSAutomationError):
         self.element_spec = element_spec
 
 
-class TimeoutError(NTWSAutomationError):
+class TimeoutError(TWSAutomationError):
     """
     Operation timed out.
 
@@ -74,7 +74,7 @@ class TimeoutError(NTWSAutomationError):
         self.timeout = timeout
 
 
-class ActionFailedError(NTWSAutomationError):
+class ActionFailedError(TWSAutomationError):
     """
     High-level action failed to complete.
 
@@ -93,7 +93,7 @@ class ActionFailedError(NTWSAutomationError):
         self.reason = reason
 
 
-class OCRError(NTWSAutomationError):
+class OCRError(TWSAutomationError):
     """
     OCR operation failed.
 
@@ -107,7 +107,7 @@ class OCRError(NTWSAutomationError):
         super().__init__(message, **kwargs)
 
 
-class SafetyError(NTWSAutomationError):
+class SafetyError(TWSAutomationError):
     """
     Safety check failed.
 
@@ -121,7 +121,7 @@ class SafetyError(NTWSAutomationError):
         super().__init__(message, **kwargs)
 
 
-class ConfigurationError(NTWSAutomationError):
+class ConfigurationError(TWSAutomationError):
     """
     Configuration error.
 

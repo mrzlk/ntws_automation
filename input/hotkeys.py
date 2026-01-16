@@ -1,7 +1,7 @@
 """
-Integration with NTWS built-in hotkey system.
+Integration with TWS built-in hotkey system.
 
-Provides access to NTWS keyboard shortcuts for
+Provides access to TWS keyboard shortcuts for
 fast, reliable automation of common actions.
 
 Note: Actual hotkey config is encrypted in HotKeysSettings.json.ibgzenc
@@ -19,11 +19,11 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-class NTWSAction(Enum):
+class TWSAction(Enum):
     """
-    Known NTWS hotkey actions.
+    Known TWS hotkey actions.
 
-    These actions correspond to built-in NTWS
+    These actions correspond to built-in TWS
     keyboard shortcuts.
     """
     # Order actions
@@ -64,12 +64,12 @@ class HotkeyBinding:
     Hotkey binding definition.
 
     Attributes:
-        action: The NTWS action this binding triggers.
+        action: The TWS action this binding triggers.
         modifiers: Modifier keys (ctrl, shift, alt).
         key: The main key.
         description: Human-readable description.
     """
-    action: NTWSAction
+    action: TWSAction
     modifiers: List[str]
     key: str
     description: str = ""
@@ -85,56 +85,56 @@ class HotkeyBinding:
         return self.key.upper()
 
 
-class NTWSHotkeys:
+class TWSHotkeys:
     """
-    NTWS hotkey manager.
+    TWS hotkey manager.
 
-    Manages keyboard shortcuts for NTWS actions.
+    Manages keyboard shortcuts for TWS actions.
     Provides default bindings based on IBKR documentation
     with support for custom overrides.
 
     Attributes:
-        DEFAULT_HOTKEYS: Default NTWS keyboard shortcuts.
+        DEFAULT_HOTKEYS: Default TWS keyboard shortcuts.
     """
 
-    # Default NTWS hotkeys (from IBKR documentation)
-    DEFAULT_HOTKEYS: Dict[NTWSAction, HotkeyBinding] = {
+    # Default TWS hotkeys (from IBKR documentation)
+    DEFAULT_HOTKEYS: Dict[TWSAction, HotkeyBinding] = {
         # Order actions
-        NTWSAction.BUY: HotkeyBinding(
-            NTWSAction.BUY, ['alt'], 'b', 'Create buy order'
+        TWSAction.BUY: HotkeyBinding(
+            TWSAction.BUY, ['alt'], 'b', 'Create buy order'
         ),
-        NTWSAction.SELL: HotkeyBinding(
-            NTWSAction.SELL, ['alt'], 's', 'Create sell order'
+        TWSAction.SELL: HotkeyBinding(
+            TWSAction.SELL, ['alt'], 's', 'Create sell order'
         ),
-        NTWSAction.TRANSMIT_ORDER: HotkeyBinding(
-            NTWSAction.TRANSMIT_ORDER, ['alt'], 't', 'Transmit order'
+        TWSAction.TRANSMIT_ORDER: HotkeyBinding(
+            TWSAction.TRANSMIT_ORDER, ['alt'], 't', 'Transmit order'
         ),
-        NTWSAction.CANCEL_ORDER: HotkeyBinding(
-            NTWSAction.CANCEL_ORDER, ['alt'], 'd', 'Cancel selected order'
+        TWSAction.CANCEL_ORDER: HotkeyBinding(
+            TWSAction.CANCEL_ORDER, ['alt'], 'd', 'Cancel selected order'
         ),
-        NTWSAction.CANCEL_ALL: HotkeyBinding(
-            NTWSAction.CANCEL_ALL, ['alt'], 'c', 'Cancel all orders'
+        TWSAction.CANCEL_ALL: HotkeyBinding(
+            TWSAction.CANCEL_ALL, ['alt'], 'c', 'Cancel all orders'
         ),
 
         # Navigation
-        NTWSAction.SEARCH_SYMBOL: HotkeyBinding(
-            NTWSAction.SEARCH_SYMBOL, ['ctrl'], 'f', 'Search for symbol'
+        TWSAction.SEARCH_SYMBOL: HotkeyBinding(
+            TWSAction.SEARCH_SYMBOL, ['ctrl'], 'f', 'Search for symbol'
         ),
-        NTWSAction.PORTFOLIO: HotkeyBinding(
-            NTWSAction.PORTFOLIO, ['alt'], 'p', 'Open portfolio'
+        TWSAction.PORTFOLIO: HotkeyBinding(
+            TWSAction.PORTFOLIO, ['alt'], 'p', 'Open portfolio'
         ),
-        NTWSAction.ORDERS: HotkeyBinding(
-            NTWSAction.ORDERS, ['alt'], 'o', 'Open orders'
+        TWSAction.ORDERS: HotkeyBinding(
+            TWSAction.ORDERS, ['alt'], 'o', 'Open orders'
         ),
 
         # Window
-        NTWSAction.CLOSE_WINDOW: HotkeyBinding(
-            NTWSAction.CLOSE_WINDOW, ['alt'], 'f4', 'Close window'
+        TWSAction.CLOSE_WINDOW: HotkeyBinding(
+            TWSAction.CLOSE_WINDOW, ['alt'], 'f4', 'Close window'
         ),
 
         # Data
-        NTWSAction.REFRESH: HotkeyBinding(
-            NTWSAction.REFRESH, [], 'f5', 'Refresh data'
+        TWSAction.REFRESH: HotkeyBinding(
+            TWSAction.REFRESH, [], 'f5', 'Refresh data'
         ),
     }
 
@@ -151,7 +151,7 @@ class NTWSHotkeys:
             custom_bindings: Optional custom hotkey overrides.
         """
         self.keyboard = keyboard
-        self.bindings: Dict[NTWSAction, HotkeyBinding] = dict(self.DEFAULT_HOTKEYS)
+        self.bindings: Dict[TWSAction, HotkeyBinding] = dict(self.DEFAULT_HOTKEYS)
 
         if custom_bindings:
             self._load_custom_bindings(custom_bindings)
@@ -160,7 +160,7 @@ class NTWSHotkeys:
         """Load custom hotkey bindings."""
         for action_name, binding_data in bindings.items():
             try:
-                action = NTWSAction(action_name)
+                action = TWSAction(action_name)
                 self.bindings[action] = HotkeyBinding(
                     action=action,
                     modifiers=binding_data.get('modifiers', []),
@@ -170,9 +170,9 @@ class NTWSHotkeys:
             except ValueError:
                 logger.warning(f"Unknown action: {action_name}")
 
-    def execute(self, action: NTWSAction) -> bool:
+    def execute(self, action: TWSAction) -> bool:
         """
-        Execute NTWS action via hotkey.
+        Execute TWS action via hotkey.
 
         Args:
             action: The action to execute.
@@ -193,7 +193,7 @@ class NTWSHotkeys:
             logger.error(f"Failed to execute hotkey {binding}: {e}")
             return False
 
-    def get_binding(self, action: NTWSAction) -> Optional[HotkeyBinding]:
+    def get_binding(self, action: TWSAction) -> Optional[HotkeyBinding]:
         """
         Get binding for action.
 
@@ -207,7 +207,7 @@ class NTWSHotkeys:
 
     def register(
         self,
-        action: NTWSAction,
+        action: TWSAction,
         modifiers: List[str],
         key: str,
         description: str = ""
@@ -216,7 +216,7 @@ class NTWSHotkeys:
         Register or override hotkey binding.
 
         Args:
-            action: The NTWS action.
+            action: The TWS action.
             modifiers: Modifier keys.
             key: Main key.
             description: Optional description.
@@ -234,11 +234,11 @@ class NTWSHotkeys:
         modifiers: List[str],
         key: str,
         description: str = ""
-    ) -> NTWSAction:
+    ) -> TWSAction:
         """
         Register custom action with hotkey.
 
-        For actions not in the default NTWSAction enum,
+        For actions not in the default TWSAction enum,
         this creates a dynamic binding.
 
         Args:
@@ -252,7 +252,7 @@ class NTWSHotkeys:
         """
         # Try to find matching action
         try:
-            action = NTWSAction(name)
+            action = TWSAction(name)
         except ValueError:
             # Custom action - store with string key
             logger.info(f"Registering custom action: {name}")
@@ -279,28 +279,28 @@ class NTWSHotkeys:
 
     def buy(self) -> bool:
         """Trigger buy order creation."""
-        return self.execute(NTWSAction.BUY)
+        return self.execute(TWSAction.BUY)
 
     def sell(self) -> bool:
         """Trigger sell order creation."""
-        return self.execute(NTWSAction.SELL)
+        return self.execute(TWSAction.SELL)
 
     def transmit(self) -> bool:
         """Transmit selected order."""
-        return self.execute(NTWSAction.TRANSMIT_ORDER)
+        return self.execute(TWSAction.TRANSMIT_ORDER)
 
     def cancel(self) -> bool:
         """Cancel selected order."""
-        return self.execute(NTWSAction.CANCEL_ORDER)
+        return self.execute(TWSAction.CANCEL_ORDER)
 
     def cancel_all(self) -> bool:
         """Cancel all orders."""
-        return self.execute(NTWSAction.CANCEL_ALL)
+        return self.execute(TWSAction.CANCEL_ALL)
 
     def search(self) -> bool:
         """Open symbol search."""
-        return self.execute(NTWSAction.SEARCH_SYMBOL)
+        return self.execute(TWSAction.SEARCH_SYMBOL)
 
     def refresh(self) -> bool:
         """Refresh data."""
-        return self.execute(NTWSAction.REFRESH)
+        return self.execute(TWSAction.REFRESH)

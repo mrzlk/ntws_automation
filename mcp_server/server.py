@@ -1,15 +1,15 @@
 """
-MCP Server implementation for NTWS Automation.
+MCP Server implementation for TWS Automation.
 
-Provides an MCP server that exposes NTWS automation
+Provides an MCP server that exposes TWS automation
 capabilities as tools that Claude can invoke.
 
 Usage:
     # Run as module
-    python -m ntws_automation.mcp_server
+    python -m tws_automation.mcp_server
 
     # Or programmatically
-    from ntws_automation.mcp_server import run_server
+    from tws_automation.mcp_server import run_server
     run_server()
 """
 
@@ -20,27 +20,27 @@ from typing import Optional
 logger = logging.getLogger(__name__)
 
 # Global toolkit instance
-_toolkit: Optional['NTWSToolkit'] = None
+_toolkit: Optional['TWSToolkit'] = None
 
 
-def get_toolkit() -> 'NTWSToolkit':
+def get_toolkit() -> 'TWSToolkit':
     """Get or create global toolkit instance."""
     global _toolkit
 
     if _toolkit is None:
-        from .. import NTWSToolkit
-        _toolkit = NTWSToolkit()
+        from .. import TWSToolkit
+        _toolkit = TWSToolkit()
 
-        # Connect to NTWS
+        # Connect to TWS
         if not _toolkit.connect():
-            logger.warning("Could not connect to NTWS. Some tools may not work.")
+            logger.warning("Could not connect to TWS. Some tools may not work.")
 
     return _toolkit
 
 
 def create_server():
     """
-    Create MCP server with NTWS tools.
+    Create MCP server with TWS tools.
 
     Returns:
         MCP Server instance.
@@ -59,11 +59,11 @@ def create_server():
         raise
 
     # Create server
-    server = Server("ntws-automation")
+    server = Server("tws-automation")
 
     @server.list_tools()
     async def list_tools():
-        """List available NTWS tools."""
+        """List available TWS tools."""
         return get_tools()
 
     @server.call_tool()
@@ -100,7 +100,7 @@ async def run_server_async():
 
 def run_server():
     """Run MCP server (blocking)."""
-    logger.info("Starting NTWS MCP Server...")
+    logger.info("Starting TWS MCP Server...")
     asyncio.run(run_server_async())
 
 

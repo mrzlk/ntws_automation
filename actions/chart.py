@@ -1,5 +1,5 @@
 """
-Chart-related actions for NTWS.
+Chart-related actions for TWS.
 """
 
 from typing import Optional

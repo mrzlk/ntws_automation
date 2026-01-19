@@ -97,23 +97,23 @@ class TWSHotkeys:
         DEFAULT_HOTKEYS: Default TWS keyboard shortcuts.
     """
 
-    # Default TWS hotkeys (from IBKR documentation)
+    # Default TWS hotkeys (configured in TWS)
     DEFAULT_HOTKEYS: Dict[TWSAction, HotkeyBinding] = {
-        # Order actions
+        # Order actions (Ctrl+Shift combinations - Alt not allowed in TWS)
         TWSAction.BUY: HotkeyBinding(
-            TWSAction.BUY, ['alt'], 'b', 'Create buy order'
+            TWSAction.BUY, ['ctrl', 'shift'], 'b', 'Create buy order'
         ),
         TWSAction.SELL: HotkeyBinding(
-            TWSAction.SELL, ['alt'], 's', 'Create sell order'
+            TWSAction.SELL, ['ctrl', 'shift'], 's', 'Create sell order'
         ),
         TWSAction.TRANSMIT_ORDER: HotkeyBinding(
-            TWSAction.TRANSMIT_ORDER, ['alt'], 't', 'Transmit order'
+            TWSAction.TRANSMIT_ORDER, ['ctrl', 'shift'], 't', 'Transmit order'
         ),
         TWSAction.CANCEL_ORDER: HotkeyBinding(
-            TWSAction.CANCEL_ORDER, ['alt'], 'd', 'Cancel selected order'
+            TWSAction.CANCEL_ORDER, ['ctrl', 'shift'], 'd', 'Cancel selected order'
         ),
         TWSAction.CANCEL_ALL: HotkeyBinding(
-            TWSAction.CANCEL_ALL, ['alt'], 'c', 'Cancel all orders'
+            TWSAction.CANCEL_ALL, ['ctrl', 'shift'], 'c', 'Cancel all orders'
         ),
 
         # Navigation
@@ -121,10 +121,10 @@ class TWSHotkeys:
             TWSAction.SEARCH_SYMBOL, ['ctrl'], 'f', 'Search for symbol'
         ),
         TWSAction.PORTFOLIO: HotkeyBinding(
-            TWSAction.PORTFOLIO, ['alt'], 'p', 'Open portfolio'
+            TWSAction.PORTFOLIO, ['ctrl', 'shift'], 'p', 'Open portfolio'
         ),
         TWSAction.ORDERS: HotkeyBinding(
-            TWSAction.ORDERS, ['alt'], 'o', 'Open orders'
+            TWSAction.ORDERS, ['ctrl', 'shift'], 'o', 'Open orders'
         ),
 
         # Window

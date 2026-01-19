@@ -166,6 +166,9 @@ class Keyboard:
         """
         Press key combination.
 
+        Uses pywinauto.keyboard.send_keys() instead of pyautogui.hotkey()
+        for reliable hotkey support in Java Swing applications (TWS).
+
         Args:
             *keys: Keys to press together (e.g., 'ctrl', 'c').
 
@@ -173,8 +176,23 @@ class Keyboard:
             keyboard.hotkey('ctrl', 'shift', 's')  # Ctrl+Shift+S
             keyboard.hotkey('alt', 'f4')           # Alt+F4
         """
-        import pyautogui
-        pyautogui.hotkey(*keys)
+        from pywinauto.keyboard import send_keys
+
+        # Build pywinauto format: modifiers + key
+        # e.g., ('ctrl', 'shift', 'b') -> '^+b'
+        modifiers = ''
+        final_key = ''
+
+        for key in keys:
+            key_lower = key.lower()
+            if key_lower in self.MODIFIER_KEYS:
+                modifiers += self.MODIFIER_KEYS[key_lower]
+            elif key_lower in self.SPECIAL_KEYS:
+                final_key = self.SPECIAL_KEYS[key_lower]
+            else:
+                final_key = key.lower()
+
+        send_keys(f'{modifiers}{final_key}')
 
     @contextmanager
     def hold(self, key: str):

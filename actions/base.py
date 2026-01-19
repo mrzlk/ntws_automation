@@ -177,6 +177,16 @@ class Action(ABC):
         seconds = seconds or self.config.timing.action_delay
         time.sleep(seconds)
 
+    def _ensure_focus(self) -> None:
+        """
+        Ensure TWS window has focus before actions.
+
+        Brings window to front and waits for focus to stabilize.
+        Call this before sending hotkeys or keyboard input.
+        """
+        self.window.bring_to_front()
+        self._delay(0.2)
+
     def _log_action(self, action: str, params: dict = None) -> None:
         """Log action execution."""
         if self.config.safety.log_all_actions:

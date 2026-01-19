@@ -247,10 +247,20 @@ class TWSWindow(WindowManager):
 
         Makes TWS the active window and ensures
         it's visible for automation.
+
+        Uses both pywinauto set_focus() and Win32 SetForegroundWindow
+        for reliable focus with Java Swing applications.
         """
+        import time
+        import ctypes
+
         if self._main_window:
             try:
                 self._main_window.set_focus()
+                # Additional Win32 API call for reliable focus
+                if self._hwnd:
+                    ctypes.windll.user32.SetForegroundWindow(self._hwnd)
+                time.sleep(0.1)
             except Exception as e:
                 logger.warning(f"Could not bring window to front: {e}")
 

@@ -47,10 +47,11 @@ dev = [
 ]
 
 [project.scripts]
-ntws-mcp = "ntws_automation.mcp_server:run_server"
+tws-mcp = "tws_automation.mcp_server:run_server"
 
-[tool.setuptools.packages.find]
-where = ["."]
+[tool.setuptools]
+packages = ["tws_automation", "tws_automation.core", "tws_automation.input", "tws_automation.screen", "tws_automation.config", "tws_automation.actions", "tws_automation.utils", "tws_automation.mcp_server"]
+package-dir = {"tws_automation" = "."}
 
 [tool.black]
 line-length = 88

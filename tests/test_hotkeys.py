@@ -395,19 +395,23 @@ def run_basic_tests() -> Tuple[int, int]:
     return passed, failed
 
 
-def run_integration_tests() -> Tuple[int, int]:
+def run_integration_tests(no_prompt: bool = False) -> Tuple[int, int]:
     """Run integration tests that require TWS."""
     print_header("Part 2: Integration Tests (TWS required)")
 
     print(f"{Colors.YELLOW}IMPORTANT: Make sure TWS is running and visible!{Colors.RESET}")
     print(f"{Colors.YELLOW}These tests will interact with the TWS window.{Colors.RESET}")
-    print(f"{Colors.YELLOW}Press Enter to continue or Ctrl+C to skip...{Colors.RESET}\n")
 
-    try:
-        input()
-    except KeyboardInterrupt:
-        print(f"\n{Colors.YELLOW}Skipping integration tests.{Colors.RESET}")
-        return 0, 0
+    if not no_prompt:
+        print(f"{Colors.YELLOW}Press Enter to continue or Ctrl+C to skip...{Colors.RESET}\n")
+        try:
+            input()
+        except KeyboardInterrupt:
+            print(f"\n{Colors.YELLOW}Skipping integration tests.{Colors.RESET}")
+            return 0, 0
+    else:
+        print(f"{Colors.YELLOW}Starting in 3 seconds...{Colors.RESET}\n")
+        time.sleep(3)
 
     tests = [
         ("Connect to TWS", test_connect),
@@ -434,6 +438,7 @@ def run_integration_tests() -> Tuple[int, int]:
 def main():
     parser = argparse.ArgumentParser(description='Test Milestone 2: Hotkeys Fix')
     parser.add_argument('--basic', action='store_true', help='Run only basic tests (no TWS required)')
+    parser.add_argument('--no-prompt', action='store_true', help='Skip confirmation prompt (for automation)')
     args = parser.parse_args()
 
     print(f"\n{Colors.BOLD}Milestone 2 Tests: Hotkeys Fix{Colors.RESET}")
@@ -449,7 +454,7 @@ def main():
 
     # Run integration tests if not --basic
     if not args.basic:
-        passed, failed = run_integration_tests()
+        passed, failed = run_integration_tests(no_prompt=args.no_prompt)
         total_passed += passed
         total_failed += failed
 

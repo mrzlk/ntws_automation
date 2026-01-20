@@ -98,6 +98,43 @@ actions/ — высокоуровневые действия
 
 ---
 
+## 2026-01-19: Hotkeys через Win32 SendInput
+
+**Решение:** Использовать Win32 SendInput API напрямую для отправки хоткеев вместо pyautogui/pywinauto
+
+**Проблема:**
+- `pyautogui.hotkey()` — не работает с Java Swing (TWS игнорирует)
+- `pywinauto.send_keys()` — сообщения не доходят до Java-приложений
+- `keyboard.send()` — конфликтует с Java
+
+**Причины выбора SendInput:**
+- Вставляет события клавиатуры напрямую в системную очередь ввода
+- Эмулирует реальное физическое нажатие клавиши
+- Java Swing видит это как настоящий ввод пользователя
+- Работает с любым приложением
+
+**Реализация:**
+```python
+def _send_input_key(vk: int, key_up: bool = False):
+    inp = INPUT()
+    inp.type = INPUT_KEYBOARD
+    inp.ki.wVk = vk
+    inp.ki.dwFlags = KEYEVENTF_KEYUP if key_up else 0
+    user32.SendInput(1, ctypes.byref(inp), ctypes.sizeof(INPUT))
+```
+
+**Ограничения:**
+- Требует фокус на целевом окне
+- Глобальный — клавиши идут в активное окно
+- Только Windows
+- Больше boilerplate кода (структуры Win32)
+
+**Тестирование:**
+- Проверено на TWS Chart Trader
+- Ctrl+Shift+B (BUY) и Ctrl+Shift+S (SELL) работают стабильно
+
+---
+
 ## Шаблон для новых решений
 
 ```markdown
